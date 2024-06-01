@@ -3,6 +3,7 @@ const cors = require("cors");
 const middleware = require("./utils/middleware");
 
 const app = express();
+const participantsRoutes = require("./routes/participant.routes");
 
 
 app.use(express.json({ limit: '5mb' })); // to parse req.body // limit shouldn't be too high to prevent DoS attacks
@@ -16,6 +17,8 @@ app.disable("x-powered-by"); // disable server fingerprinting
 app.get("/", (req, res) => {
     res.json({ message: "Mastering Backend Development." });
 });
+
+app.use('/api/participants', participantsRoutes);
 
 app.all('*', (req, res)=> {
     return res.status(404).json({ error: `Can't find ${req.originalUrl} on the server` });
