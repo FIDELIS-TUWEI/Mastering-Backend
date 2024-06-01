@@ -28,7 +28,7 @@ const createParticipant = async (req, res) => {
 // @desc All Participants
 const getParticipants = async (req, res) => {
     try {
-        const participants = await Participant.find({}).lean();
+        const participants = await Participant.find({});
 
         if (!participants) {
             return res.status(404).json({ error: "No Participants found!" });
@@ -71,10 +71,8 @@ const editParticipant = async (req, res) => {
             await Participant.findByIdAndUpdate(participantId, req.body, { new: true, runValidators: true });
             res.status(200).json({ message: "Participant Updated successfully" });
         } else {
-            return res.status(404).json({ error: "Participant not found!" });
+            return res.status(404).json({ error: `Participant with ID: ${participantId} not found!`  });
         }
-
-        res.status(200).json(participant);
 
     } catch (error) {
         logger.error("Error occured on editParticipant controller", error);
