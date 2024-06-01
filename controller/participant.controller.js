@@ -1,18 +1,11 @@
 const Participant = require("../model/participant.model");
+const logger = require("../utils/logger");
 
 // @desc Create new Participant
 const createParticipant = async (req, res) => {
     try {
         const { name } = req.body;
 
-        // 1. check if participant exists
-        const duplicate = await Participant.findOne({ username });
-
-        if (duplicate) {
-            return res.status(400).json({ error: "Participant already exists!" });
-        };
-
-        // 2. create new participant
         const newParticipant = new Participant({
             name
         });
