@@ -76,6 +76,7 @@ const editParticipant = async (req, res) => {
 
         if (participant) {
             await Participant.findByIdAndUpdate(participantId, req.body, { new: true, runValidators: true });
+            res.status(200).json({ message: "Participant Updated successfully" });
         } else {
             return res.status(404).json({ error: "Participant not found!" });
         }
@@ -89,11 +90,28 @@ const editParticipant = async (req, res) => {
 };
 
 // @desc Delete Participant
+const deleteParticipant = async (req, res) => {
+    try {
+        const participantId = req.params.id;
+        // check if participant exists
+        const participant = await Participant.findById(participantId);
 
+        if (participant) {
+            await Participant.findByIdAndDelete(participantId);
+            res.status(200).json({ message: "Participant deleted successfully" });
+        } else {
+            return res.status(404).json({ error: "Participant not found!" });
+        }
+    } catch (error) {
+        logger.error("Error occured in deleteParticipant controller", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
 
 module.exports = {
     createParticipant,
     getParticipants,
     getParticipant,
-    editParticipant
+    editParticipant,
+    deleteParticipant
 };
